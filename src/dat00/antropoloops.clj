@@ -1,21 +1,13 @@
 (ns dat00.antropoloops
   (:use [dat00.bd :as bd]
         [dat00.oscloops :as osc-loops]
-        [dat00.util :as ut]
         [clj-time.local :as l]
         [clj-time.coerce :as c :only [to-long]]
         quil.core))
 
 (declare antropo-loops-indexed tempo current-index)
 
-(defn get-long-time []
-  (c/to-long (l/local-now)))
-
-(def antropo-loops (atom {}))
-
-(def history (atom []))
-
-(def recording-history (atom false))
+(def antropo-loops (atom {})) ;;creo que es el equivalente a miAntropoloops (hashmap) en p5
 
 ;; ANTROPOLOOPS API
 (defn change-loop-end [loopend-value]
@@ -24,10 +16,6 @@
     (swap! current-index inc)))
 
 (defn change-loop-state [{:keys [track-value clip-value state-value]}]
-  (when @recording-history
-    (swap!  history conj (merge
-                           {:id "change-loop-state" :time (get-long-time)}
-                           {:clip clip-value :track track-value :state state-value})))
   (swap!  antropo-loops assoc-in [{:clip clip-value :track track-value} :state] state-value))
 
 (defn- update-track-prop-value [track-value the-keyword the-value]
@@ -39,13 +27,9 @@
       (swap! antropo-loops assoc-in [(key c) the-keyword] the-value))))
 
 (defn change-volume [{:keys [track volume]}]
-  (when @recording-history
-    (swap!  history conj (merge {:id "change-volume" :time (get-long-time) } {:track track :volume volume})))
   (update-track-prop-value track :volume volume))
 
 (defn change-solo [{:keys [track solo]}]
-  (when @recording-history
-    (swap! history conj (merge {:id "change-solo" :time (get-long-time)} {:track track :solo solo})))
   (update-track-prop-value track :solo solo))
 
 (defn load-clip [{:keys [track clip nombre]}]
@@ -69,9 +53,6 @@
                     :volume 0
                     :loopend 1}]
     (swap! antropo-loops assoc (select-keys antro-loop [:track :clip]) antro-loop)))
-
-(defn load-tempo [tempo]
-  (def tempo 0.5))
 
 (defn reset[]
   (reset! antropo-loops {})

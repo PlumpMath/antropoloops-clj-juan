@@ -50,15 +50,15 @@
 (defn load-resources []
   (def mundi (load-image "resources/1_BDatos/mapa_1280x800.png"))
   (def font (load-font "resources/1_BDatos/ArialMT-20.vlw"))
-      (def tucan (load-shape "data/mapam.svg")))
+  (def tucan (load-shape "data/mapam.svg")))
 
-(def color-bg 0)
+(def color-bg 0) ;;Color del rectangulo de fondo de las portadas (negro)
 
 (defn draw-background []
-  (background 100)
+  (background 100) ;;color de fondo del background (gris)
   (fill color-bg)
   (no-stroke)
-  (rect 0 0 (width) 160))
+  (rect 0 0 (width) 160)) ;;rectángulo donde van las portadas
 
 (defn draw-svg []
   (shape tucan -65 180 1400 710))

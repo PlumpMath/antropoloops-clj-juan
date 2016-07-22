@@ -4,7 +4,6 @@
      [netP5 NetAddress Logger])
 (:use
    quil.core
-   [dat00.util :as util]
    [dat00.osc :as osc]))
 
 (defn make-call-bis [namee & more]
@@ -30,9 +29,14 @@
         (val (first res)))
       )))
 
+(defn substring? [sub st]
+  (if (not= (.indexOf st sub) -1)
+    true
+    false))
+
 (defn event-to-keyword [message]
   (let [path (.addrPattern message)]
-   (condp util/substring?  path
+   (condp substring?  path
      "/live/name/clip" :clip
      "/live/clip/info" :info
      "/live/play" :play
@@ -57,17 +61,10 @@
 (defn make-async-call-for-all-clips []
   (osc/send-osc-message (osc/make-osc-message "/live/name/clip")))
 
-(defn read-clip-info [osc-message ]
+(defn read-clip-info [osc-message]
   (let [[track clip nombre] (.arguments osc-message)]
     {:track track :clip clip :nombre nombre}))
 
 (defn init-oscP5-communication [papplet]
   (osc/init-oscP5 papplet))
 
-(defn model-related [m]
-  (condp = m
-    :loopend [ [:loopend-value 0 :floatValue]]
-    :info [ [:track-value 0 :intValue] [:clip-value 1 :intValue] [:state-value 1 :intValue]]
-    :jo [ [:pepe 0 :intValue] [:jose 1 :stringValue]]
-    nil
-    ))

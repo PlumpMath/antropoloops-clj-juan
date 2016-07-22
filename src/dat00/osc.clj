@@ -1,7 +1,7 @@
 (ns dat00.osc
   (:import
    [oscP5 OscP5 OscMessage ]
-   [netP5 NetAddress Logger]))
+   [netP5 NetAddress]))
 
 (declare my-remote-location my-oscP5)
 

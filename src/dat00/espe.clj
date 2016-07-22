@@ -1,80 +1,29 @@
 (ns dat00.espe
   (:use
-    dat00.protocols
     quil.core
     [dat00.oscloops :as osc-loops]
     [dat00.graphics :as g]
     [dat00.antropoloops :as antropoloops]
-    [dat00.bd :as bd]
-    [dat00.util :as ut]
-    [clojure.data.json :as json :only [read-str]]))
+    [clojure.data.json :as json :only [read-str]])
+  (:gen-class))
 
 (def drawing (atom false))
-
-(defn get-colors [^toxi.color.ColorRange cr t-color num-colors variance]
-  (.getColors cr t-color num-colors variance))
-
-(declare history-paths)
 
 (defn setup []
   (g/setup-graphics)
   (g/load-resources))
 
-(comment (defn lines-history []
-  (doseq [track-path-raw history-paths]
-    (let [track-path (first track-path-raw)
-          color-list-path (last track-path-raw)]
-      (no-fill)
-      (doseq [n (range  (count  track-path))]
-        (let [track-line-path (nth track-path n)
-              color-line-path (.get color-list-path n)
-              origen (first track-line-path)
-              ox (+ 5 (:coordX origen))
-              oy (:coordY origen)
-              fin (second track-line-path)
-              fx (:coordX fin)
-              fy (:coordY fin)
-              a1x (if (not= ox fx) (+ ox (-  fx ox)) (- ox 20) )
-              a1y (if (not= oy fy)  (- oy (abs  (-  fy oy)) 100) (- oy 20))
-              a2x (if (not= ox fx) fx (+ fx 50))
-              a2y (if (not= oy fy)  fy (- oy 50))]
-          (stroke (rgb color-line-path))
-          (stroke-weight 1)
-          (doseq [i (range 10)]
-            (bezier (-  ox i) oy (- a1x i) (- a1y i)  a2x  a2y  fx fy))))))))
-
 (def lugares-inside (atom {}))
 
 (def lines (atom []))
 
-(def main-count (atom 0))
-
-(defn print-interior [c int-lines each-modulo-width [-color lugar volume] contador-lines-int]
-  (let [starting (* c each-modulo-width)
-        each-l-w (/ each-modulo-width (count int-lines))
-        start-l (* contador-lines-int each-l-w)]
-    (no-stroke)
-    (fill (rgb -color)  (map-range volume 1 8 1 100))
-    (triangle
-      (+ starting start-l)
-      (- (height) 100)
-      (+ starting start-l each-l-w)
-      (- (height) 100)
-      (:coordX lugar)
-      (:coordY lugar))
-    (ellipse (:coordX lugar) (:coordY lugar)  5 5 )
-    (rect (+ starting start-l) (- (height) 100)  each-l-w 100)))
-
-(defn print-module-time [int-lines c]
-  (when-not (empty? int-lines)
-    (let [each-modulo-width (/ (width) (count @lines))]
-      (doall (map (partial print-interior c int-lines each-modulo-width) int-lines (range))))))
+;(def main-count (atom 0))
 
 (defn draw []
-  (frame-rate 5)
+  (frame-rate 5) ;; en processing no tengo definido framerate
   (g/draw-background)
-  (g/draw-antropoloops-credits)
-  (swap! main-count inc)
+  (g/draw-antropoloops-credits) ;;no se ven
+  ;(swap! main-count inc)
   (when (and (not-empty @antropoloops/antropo-loops) @drawing)
     (text "drawing!!" 10 175)
     (let [m (millis)
@@ -102,16 +51,6 @@
           (g/draw-line-country active-loop posicion-x-disco lugar)
           (g/draw-abanico-country active-loop lugar tempo m))
         (swap! lines conj (shuffle @int-lines)))))
-  (doall
-    (map print-module-time @lines (range)))
-  (when-not
-    (empty? @lines)
-    (let [each-module (/ (width) (count @lines))]
-      (doseq [m (range (count @lines))]
-        (stroke 1)
-        (stroke-weight 1)
-        (let [x-m (* m each-module)]
-          (line x-m (height) x-m (- (height) 20))))))
   (g/draw-svg))
 
 (defn key-press []
@@ -125,19 +64,20 @@
     \5 (println "print misatropolops" @antropoloops/antropo-loops)
     (println (str "no mapped key " (raw-key)))))
 
-(defsketch juan
-  :setup setup
-  :draw draw
-  :size [(screen-width) (screen-height)]
-  :osc-event antropoloops/process-osc-event
-  :key-typed key-press)
-
-(osc-loops/init-oscP5-communication juan)
-
-(defn -main
-  "The application's main function"
-  [& args]
-  (println args))
+(defsketch applet
+    :setup setup
+    :draw draw
+    :size [(screen-width) (screen-height)]
+    :osc-event antropoloops/process-osc-event
+    :key-typed key-press
+    ;:features [:exit-on-close]
+  )
 
 
+(defn -main [& args]
+ )
+
+(osc-loops/init-oscP5-communication applet)
+
+sketch-stop
 

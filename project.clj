@@ -6,14 +6,11 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [quil/quil "2.0.1-juan"]
                  [org.clojure/data.json "0.2.4"]
-                 ;[quil-video/macosx64 "1"]
-                 ;[quil-video/jna "1"]
-                 ;[quil-video/video "1"]
-                 ;[quil-video/gstreamer-java "1"]
                  [clj-time "0.7.0"]
-                 [im.chit/iroh "0.1.10"]
-                 [com.datomic/datomic-free "0.9.4556"]
+                 [im.chit/iroh "0.1.10"] ;se usa?
+                 [com.datomic/datomic-free "0.9.4556"] ;se usa?
                  ]
   :resource-paths ["lib/gstreamer-java.jar" "lib/geomerative.jar" "lib/batikfont" "lib/video.jar" "lib/jna.jar" "lib/macosx64" "lib/oscP5.jar" "lib/colorutils.jar" "lib/toxiclibscore.jar"]
   :main dat00.espe
+  :aot [dat00.espe]
   )
