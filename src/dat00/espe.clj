@@ -5,7 +5,8 @@
     [dat00.graphics :as g]
     [dat00.antropoloops :as antropoloops]
     [clojure.data.json :as json :only [read-str]])
-  (:gen-class))
+  ;(:gen-class)
+  )
 
 (def drawing (atom false))
 
@@ -70,14 +71,16 @@
     :size [(screen-width) (screen-height)]
     :osc-event antropoloops/process-osc-event
     :key-typed key-press
-    ;:features [:exit-on-close]
+    :features [:exit-on-close]
   )
-
-
-(defn -main [& args]
- )
 
 (osc-loops/init-oscP5-communication applet)
 
-sketch-stop
+(defn -main [& args]
+  (println args)
+ )
+
+
+
+
 

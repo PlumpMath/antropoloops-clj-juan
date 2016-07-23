@@ -12,5 +12,5 @@
                  ]
   :resource-paths ["lib/gstreamer-java.jar" "lib/geomerative.jar" "lib/batikfont" "lib/video.jar" "lib/jna.jar" "lib/macosx64" "lib/oscP5.jar" "lib/colorutils.jar" "lib/toxiclibscore.jar"]
   :main dat00.espe
-  :aot [dat00.espe]
+  ;:aot [dat00.espe]
   )

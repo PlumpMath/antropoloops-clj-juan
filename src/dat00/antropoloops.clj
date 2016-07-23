@@ -75,4 +75,5 @@
       :info (change-loop-state (osc-loops/map-direct-get message [ [:track-value 0 :intValue] [:clip-value 1 :intValue] [:state-value 2 :intValue]]))
       :volume (change-volume  (osc-loops/map-direct-get message [[:track 0 :intValue] [:volume 1 :floatValue]]) )
       :solo (change-solo (osc-loops/map-direct-get message [[:track 0 :intValue] [:solo 1 :intValue]])  )
-      :tempo (def tempo (osc-loops/map-direct-get message [[:tempo 0 :floatValue]])))))
+      :tempo (def tempo (osc-loops/map-direct-get message [[:tempo 0 :floatValue]]))
+      (do #_(println "not mapped")))))
