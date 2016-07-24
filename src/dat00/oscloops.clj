@@ -43,7 +43,8 @@
      "/live/clip/loopend" :loopend
      "/live/volume" :volume
      "/live/solo" :solo
-     "/live/tempo" :tempo)))
+     "/live/tempo" :tempo
+     (do (println "OSC-EVENT NOT FILTERED" path)))))
 
 (defn make-async-call-for-loop [{:keys [clip track]}]
   (-> (osc/make-osc-message "/live/clip/loopend")
