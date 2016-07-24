@@ -69,7 +69,7 @@
     :setup setup
     :draw draw
     :size [(screen-width) (screen-height)]
-    :osc-event antropoloops/process-osc-event
+    :osc-event antropoloops/process-osc-event-raw
     :key-typed key-press
     :features [:exit-on-close]
   )

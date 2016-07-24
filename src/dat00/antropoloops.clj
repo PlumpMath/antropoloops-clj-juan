@@ -77,3 +77,20 @@
       :solo (change-solo (osc-loops/map-direct-get message [[:track 0 :intValue] [:solo 1 :intValue]])  )
       :tempo (def tempo (osc-loops/map-direct-get message [[:tempo 0 :floatValue]]))
       (do #_(println "not mapped")))))
+
+(defn process-osc-event-raw [message]
+  (println "class" (class message)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
